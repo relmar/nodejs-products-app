@@ -1,9 +1,11 @@
+const path = require('path');
+
 const express = require('express');
 
 const router = express.Router();
 
 router.get('/products', (req, res, next) => {
-    res.send('<ul><li>Product 1</li><li>Product 2</li></ul><a href="/">Back</a>');
+    res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
 });
 
 router.post('/add-product', (req, res, next) => {
