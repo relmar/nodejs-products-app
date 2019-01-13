@@ -1,0 +1,18 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "description": "Very simple app with routing",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "docker-debug": "nodemon --inspect=0.0.0.0:9229 app.js"
+  },
+  "author": "Marcin Religa",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9"
+  }
+}

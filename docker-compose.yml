@@ -1,0 +1,28 @@
+version: "3.1"
+services:
+  app:
+    container_name: ${PROJECT_NAME}-app
+    image: mr/nodejs:11.6
+    networks:
+      - internal
+      - proxy
+    restart: always
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/usr/app
+    labels:
+      - 'traefik.backend=${PROJECT_NAME}_nodejs'
+      - 'traefik.port=8100'
+      - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
+      - 'traefik.docker.network=traefik_webgateway'
+
+networks:
+  proxy:
+    external:
+      name: traefik_webgateway
+  internal:
+    external: false
