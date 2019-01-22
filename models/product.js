@@ -5,6 +5,10 @@ const basepath = require('../helpers/path');
 
 const filePath = path.join(basepath, 'data', 'products.json');
 
+/**
+ * 
+ * @param {function} callback 
+ */
 const getProductsFromFile = (callback) => {
     fs.readFile(filePath, (err, data) => {
         let products = [];
@@ -21,11 +25,27 @@ const getProductsFromFile = (callback) => {
 
 module.exports = class Product {
 
-    constructor(title) {
+    /**
+     * 
+     * @param {string} title 
+     * @param {string} imageUrl 
+     * @param {string} description 
+     * @param {number} price 
+     */
+    constructor(title, imageUrl, description, price) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.price = price;
     }
 
-    save(callback) {
+
+    /**
+     * 
+     */
+    save() {
+        this.id = Math.random().toString();
+
         getProductsFromFile((products) => {
             products.push(this);
             try {
@@ -39,7 +59,28 @@ module.exports = class Product {
         })
     }
 
+
+    /**
+     * 
+     * @param {function} callback 
+     */
     static fetchAll(callback) {
         getProductsFromFile(callback);
+    }
+
+    
+    /**
+     * 
+     * @param {number} id 
+     * @param {function} callback 
+     */
+    static findById(id, callback) {
+        getProductsFromFile(products => {
+            const product = products.find(prod => {
+                return prod.id == id;
+            });
+
+            callback(product);
+        })
     }
 }
