@@ -16,6 +16,7 @@ block content
                         .card__actions
                             a.btn(href="/admin/product/" +product.id+ "/edit") Edit
                             form(action="/admin/product/" +product.id+ "/delete", method="post")
+                                input(type="hidden", name="productId", value=product.id)
                                 button.btn(type="submit") Delete
         else
             h1 No Products Found!

@@ -2,7 +2,7 @@ extends ../layouts/main-layout.pug
 
 block content
     main
-        form(action="/admin/add-product", method="post")
+        form(action="/admin/product/add", method="post")
             .form-control
                 label(for="title") Title
                 input#title(type="text", name="title")

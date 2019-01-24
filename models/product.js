@@ -26,13 +26,14 @@ const getProductsFromFile = (callback) => {
 module.exports = class Product {
 
     /**
-     * 
+     * @param {string} id  
      * @param {string} title 
      * @param {string} imageUrl 
      * @param {string} description 
      * @param {number} price 
      */
-    constructor(title, imageUrl, description, price) {
+    constructor(id, title, imageUrl, description, price) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -44,10 +45,18 @@ module.exports = class Product {
      * 
      */
     save() {
-        this.id = Math.random().toString();
-
         getProductsFromFile((products) => {
-            products.push(this);
+            if (!this.id) {
+                this.id = Math.random().toString();
+                products.push(this);
+
+            } else {
+                const existingProductIndex = products.findIndex(product => {
+                    return product.id === this.id;
+                });
+                products[existingProductIndex] = this;
+            }
+
             try {
                 fs.writeFile(filePath, JSON.stringify(products), err => {
                     console.log('saved');
@@ -68,7 +77,7 @@ module.exports = class Product {
         getProductsFromFile(callback);
     }
 
-    
+
     /**
      * 
      * @param {number} id 
@@ -81,6 +90,24 @@ module.exports = class Product {
             });
 
             callback(product);
+        })
+    }
+
+    /**
+     * 
+     * @param {number} id 
+     */
+    static deleteById(id) {
+        getProductsFromFile(products => {
+            const productIndex = products.findIndex(prod => {
+                return prod.id === id;
+            });
+
+            products = products.splice(productIndex, 1);
+
+            fs.writeFile(filePath, JSON.stringify(products), err => {
+                console.log('saved');
+            });
         })
     }
 }

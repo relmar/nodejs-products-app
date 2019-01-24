@@ -1,1 +1,21 @@
 extends ../layouts/main-layout.pug
+
+block content
+    main
+        form(action=formAction, method="post")
+            .form-control
+                label(for="title") Title
+                input#title(type="text", name="title", value=edit?product.title:'')
+            .form-control
+                label(for="imageUrl") Image URL
+                input#imageUrl(type="text", name="imageUrl", value=edit?product.imageUrl:'')
+            .form-control
+                label(for="price") Price
+                input#price(type="number", name="price", step="0.01", value=edit?product.price.trim():'')
+            .form-control
+                label(for="description") Description
+                textarea#description(name="description", rows="5") #{edit?product.description.trim():''}
+            if !edit
+                button.btn(type="submit") Add Product
+            else
+                button.btn(type="submit") Update Product
