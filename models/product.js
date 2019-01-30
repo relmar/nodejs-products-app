@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const basepath = require('../helpers/path');
+const Cart = require('./cart');
 
 const filePath = path.join(basepath, 'data', 'products.json');
 
@@ -103,10 +104,14 @@ module.exports = class Product {
                 return prod.id === id;
             });
 
+            const product = products[productIndex];
             products = products.splice(productIndex, 1);
 
             fs.writeFile(filePath, JSON.stringify(products), err => {
-                console.log('saved');
+                if (!err) {
+                    Cart.deleteProduct(product);
+                    console.log('removed');
+                }
             });
         })
     }

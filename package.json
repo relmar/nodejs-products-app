@@ -8,6 +8,11 @@
     "start": "nodemon app.js",
     "docker-debug": "nodemon --inspect=0.0.0.0:9229 app.js"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*.json"
+    ]
+  },
   "author": "Marcin Religa",
   "license": "ISC",
   "dependencies": {

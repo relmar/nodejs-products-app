@@ -8,6 +8,7 @@ module.exports.getAddProduct = (req, res, next) => {
     });
 }
 
+
 module.exports.postAddproduct = (req, res, next) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
@@ -16,6 +17,7 @@ module.exports.postAddproduct = (req, res, next) => {
 
     const prod = new Product(null, title, imageUrl, description, price);
     prod.save();
+
     res.redirect(301, '/admin/products');
 }
 
@@ -34,6 +36,7 @@ module.exports.getEditProduct = (req, res, next) => {
     })
 }
 
+
 module.exports.postEditProduct = (req, res, next) => {
     const productId = req.params.productId;
 
@@ -50,11 +53,13 @@ module.exports.postEditProduct = (req, res, next) => {
     });
 };
 
+
 module.exports.postDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
     Product.deleteById(productId);
     res.redirect(301, '/admin/products');
 };
+
 
 module.exports.getAdminProducts = (req, res, next) => {
     Product.fetchAll((products) => {

@@ -21,6 +21,11 @@ const CartItem = class CartItem {
 }
 
 module.exports = class Cart {
+    /**
+     * 
+     * @param {Product} product 
+     * @param {number} quantity 
+     */
     static addProduct(product, quantity) {
         fs.readFile(filePath, (err, data) => {
             let cart = {
@@ -32,7 +37,7 @@ module.exports = class Cart {
                 try {
                     cart = JSON.parse(data);
                 } catch (error) {
-                    
+
                 }
             }
 
@@ -55,5 +60,66 @@ module.exports = class Cart {
                 console.log(err);
             });
         });
+    }
+
+    /**
+     * 
+     * @param { function } callback 
+     */
+    static getCart(callback) {
+        fs.readFile(filePath, (err, data) => {
+            let cart = {
+                products: [],
+                totalPrice: 0
+            }
+
+            if (!err) {
+                try {
+                    cart = JSON.parse(data);
+                } catch (error) {
+
+                }
+            }
+
+            callback(cart.products, cart.totalPrice);
+        });
+    };
+
+
+    /**
+     * 
+     * @param {Product} product 
+     */
+    static deleteProduct(product) {
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                return false;
+            }
+
+            let cart = {}
+
+            try {
+                cart = JSON.parse(data);
+            } catch (error) {
+
+            }
+
+            if (cart) {
+                const existingProductIndex = cart.products.findIndex(_product => {
+                    return _product.id === product.id;
+                });
+
+                if (existingProductIndex) {
+                    const productQuantity = cart.products[existingProductIndex].quantity;
+                    cart.products.splice(existingProductIndex, 1);
+                    cart.totalPrice = cart.totalPrice - (product.price * productQuantity);
+                }
+
+                fs.writeFile(filePath, JSON.stringify(cart), errr => {
+                    console.log(err);
+                });
+            }
+        });
+
     }
 }
